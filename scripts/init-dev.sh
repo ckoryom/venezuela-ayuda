@@ -31,7 +31,21 @@ pushd "$ROOT_DIR" >/dev/null
 echo "▶️  Iniciando stack local de Supabase..."
 supabase start --workdir "$SUPABASE_DIR" >/dev/null
 
-status_env="$(supabase status --workdir "$SUPABASE_DIR" -o env)"
+status_env=""
+for attempt in $(seq 1 30); do
+  if status_env="$(supabase status --workdir "$SUPABASE_DIR" -o env 2>/dev/null)"; then
+    break
+  fi
+
+  if [[ "$attempt" -eq 30 ]]; then
+    echo "❌ Supabase sigue arrancando y no devolvio estado listo a tiempo." >&2
+    echo "   Ejecuta: supabase status --workdir supabase -o env" >&2
+    exit 1
+  fi
+
+  echo "⏳ Esperando a que Supabase termine de arrancar... (${attempt}/30)"
+  sleep 5
+done
 
 api_url="$(echo "$status_env" | awk -F= '/^API_URL=/{print $2}')"
 anon_key="$(echo "$status_env" | awk -F= '/^ANON_KEY=/{print $2}')"
