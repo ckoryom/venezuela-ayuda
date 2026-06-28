@@ -170,6 +170,7 @@ Notas:
 
 - OpenAI, FR-API y GA siguen siendo opcionales; si no configuras esas llaves, la app igual funciona.
 - El primer arranque de Supabase local puede tardar mas porque descarga imagenes de Docker.
+- Si ves `Could not find the supabase-go binary`, reconstruye el contenedor para refrescar la imagen: `Dev Containers: Rebuild Container`.
 
 ### Tipos de Supabase
 

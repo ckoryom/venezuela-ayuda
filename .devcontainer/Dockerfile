@@ -13,9 +13,13 @@ RUN case "${TARGETARCH}" in \
     *) echo "Arquitectura no soportada: ${TARGETARCH}" && exit 1 ;; \
   esac \
   && curl -fsSL "https://github.com/supabase/cli/releases/latest/download/supabase_linux_${SUPABASE_ARCH}.tar.gz" -o /tmp/supabase.tar.gz \
-  && tar -xzf /tmp/supabase.tar.gz -C /tmp \
-  && mv /tmp/supabase /usr/local/bin/supabase \
-  && chmod +x /usr/local/bin/supabase \
+  && mkdir -p /usr/local/lib/supabase \
+  && tar -xzf /tmp/supabase.tar.gz -C /usr/local/lib/supabase \
+  && chmod +x /usr/local/lib/supabase/supabase /usr/local/lib/supabase/supabase-go \
+  && ln -sf /usr/local/lib/supabase/supabase /usr/local/bin/supabase \
+  && ln -sf /usr/local/lib/supabase/supabase-go /usr/local/bin/supabase-go \
   && rm -f /tmp/supabase.tar.gz
+
+ENV SUPABASE_GO_BINARY=/usr/local/lib/supabase/supabase-go
 
 USER node
