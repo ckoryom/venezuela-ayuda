@@ -116,6 +116,61 @@ npm run build
 node --test scripts/dedup-lib.test.mjs
 ```
 
+### Desarrollo con Dev Container (recomendado)
+
+Este flujo levanta la app completa en local dentro del contenedor:
+Next.js + Supabase local (API, Postgres, Studio).
+
+Requisitos en tu maquina host:
+
+- Docker Desktop o Docker Engine corriendo.
+- VS Code con la extension Dev Containers.
+
+Pasos:
+
+```bash
+# 1) Abre el repo en VS Code
+# 2) Command Palette -> Dev Containers: Reopen in Container
+```
+
+Al crear el contenedor por primera vez, se ejecuta automaticamente:
+
+- `npm install`
+- `bash scripts/init-dev.sh`
+
+Eso inicia Supabase local y deja `.env.local` listo con:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SECRET_KEY`
+- `SUPABASE_DB_URL`
+
+Puertos esperados:
+
+- `3000` -> app Next.js
+- `54331` -> API local de Supabase
+- `54332` -> Postgres local
+- `54333` -> Supabase Studio
+- `54334` -> Inbucket (emails de prueba)
+
+Comandos utiles dentro del contenedor:
+
+```bash
+npm run dev:init          # reinicia Supabase local y reescribe .env.local
+npm run dev               # app en http://localhost:3000
+npm run supabase:start    # levanta stack local de Supabase
+npm run supabase:stop     # detiene stack local de Supabase
+bash scripts/apply-migrations.sh
+npm run test
+npm run lint
+npm run build
+```
+
+Notas:
+
+- OpenAI, FR-API y GA siguen siendo opcionales; si no configuras esas llaves, la app igual funciona.
+- El primer arranque de Supabase local puede tardar mas porque descarga imagenes de Docker.
+
 ### Tipos de Supabase
 
 `src/types/database.types.gen.ts` es un archivo **generado por Supabase CLI**. No
@@ -137,8 +192,8 @@ SUPABASE_PROJECT_ID=xxxxxxxxxxxxxxxxxxxx npm run types:prod
 ```
 
 Si `types:dev` falla con `supabase/config.toml not found`, ejecuta
-`supabase init` una vez. Si falla porque los puertos `54321`-`54324` están en uso,
-este repo ya trae `supabase/config.toml` configurado para usar `54331`-`54334`.
+`supabase init` una vez. Si falla porque los puertos `54331`-`54334` están en uso,
+ajusta esos puertos en `supabase/config.toml`.
 
 ### Migraciones y backups
 

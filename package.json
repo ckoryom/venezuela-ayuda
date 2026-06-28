@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:init": "bash scripts/init-dev.sh",
     "build": "next build",
     "start": "next start",
+    "supabase:start": "supabase start --workdir supabase",
+    "supabase:stop": "supabase stop --workdir supabase",
     "lint": "eslint",
     "test": "node --test scripts/*.test.mjs",
     "types:dev": "supabase gen types typescript --local --schema public > ./src/types/database.types.gen.ts",

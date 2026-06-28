@@ -1,0 +1,32 @@
+{
+  "name": "venezuela-ayuda-devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "containerEnv": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "forwardPorts": [3000, 54331, 54332, 54333, 54334],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js"
+    },
+    "54331": {
+      "label": "Supabase API"
+    },
+    "54332": {
+      "label": "Postgres local"
+    },
+    "54333": {
+      "label": "Supabase Studio"
+    },
+    "54334": {
+      "label": "Supabase Inbucket"
+    }
+  },
+  "postCreateCommand": "npm install && bash scripts/init-dev.sh",
+  "remoteUser": "node"
+}
