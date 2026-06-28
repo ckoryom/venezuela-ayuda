@@ -22,6 +22,4 @@ RUN case "${TARGETARCH}" in \
   && if [ -e /usr/local/lib/supabase/supabase-go ]; then ln -sf /usr/local/lib/supabase/supabase-go /usr/local/bin/supabase-go; fi \
   && rm -f /tmp/supabase.tar.gz
 
-ENV SUPABASE_GO_BINARY=/usr/local/lib/supabase/supabase-go
-
 USER node
